@@ -33,6 +33,7 @@ export default function Sidebar() {
     { label: "Explore", icon: Info, href: "/explore" },
     { label: "Sharing", icon: Calendar, href: "/sharing" },
     { label: "Favorites", icon: Star, href: "/favorites" },
+    { label: "Albums", icon: Grid, href: "/albums" },
     { label: "Archive", icon: Archive, href: "/archive" },
     { label: "Utilities", icon: Clock, href: "/utilities" },
     { label: "Trash", icon: Trash2, href: "/trash" },
