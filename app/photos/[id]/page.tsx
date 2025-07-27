@@ -1,40 +1,18 @@
 "use client"
 
-import { ArrowLeft, Download, Share, Edit, Info, ChevronLeft, ChevronRight, Star, MoreHorizontal } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { activePhotos, getPhotoById } from "@/data/data"
 import { useToast } from "@/hooks/use-toast"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-
-// Sample photo data
-const allPhotos = Array.from({ length: 50 }, (_, i) => ({
-  id: i + 1,
-  src: `/placeholder.svg?height=${300 + (i % 3) * 50}&width=${400 + (i % 5) * 50}`,
-  alt: `Photo ${i + 1}`,
-  date: new Date(2023, Math.floor(i / 10), (i % 28) + 1).toLocaleDateString(),
-  favorite: i % 7 === 0,
-  location:
-    i % 5 === 0
-      ? "Mountain View, CA"
-      : i % 5 === 1
-        ? "San Francisco, CA"
-        : i % 5 === 2
-          ? "New York, NY"
-          : i % 5 === 3
-            ? "Seattle, WA"
-            : "Chicago, IL",
-  camera: "Google Pixel 6",
-  size: "3.2 MB",
-  resolution: "4000 x 3000",
-  taken: new Date(2023, Math.floor(i / 10), (i % 28) + 1).toLocaleString(),
-}))
+import { ArrowLeft, ChevronLeft, ChevronRight, Download, Edit, Info, MoreHorizontal, Share, Star } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { notFound, useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 
 export default function PhotoPage({ params }: { params: { id: string } }) {
   const router = useRouter()
@@ -45,13 +23,18 @@ export default function PhotoPage({ params }: { params: { id: string } }) {
   const [isFavorite, setIsFavorite] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Find the current photo
-  const photo = allPhotos.find((p) => p.id === photoId) || allPhotos[0]
+  // Find the current photo using the utility function
+  const photo = getPhotoById(photoId)
+  
+  // If photo doesn't exist, show 404
+  if (!photo) {
+    notFound()
+  }
 
-  // Get previous and next photo IDs
-  const currentIndex = allPhotos.findIndex((p) => p.id === photoId)
-  const prevId = currentIndex > 0 ? allPhotos[currentIndex - 1].id : null
-  const nextId = currentIndex < allPhotos.length - 1 ? allPhotos[currentIndex + 1].id : null
+  // Get previous and next photo IDs from active photos only
+  const currentIndex = activePhotos.findIndex((p) => p.id === photoId)
+  const prevId = currentIndex > 0 ? activePhotos[currentIndex - 1].id : null
+  const nextId = currentIndex < activePhotos.length - 1 ? activePhotos[currentIndex + 1].id : null
 
   useEffect(() => {
     setIsFavorite(photo.favorite || false)
@@ -101,8 +84,29 @@ export default function PhotoPage({ params }: { params: { id: string } }) {
     })
   }
 
+  // Format file size
+  const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes'
+    const k = 1024
+    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  }
+
+  // Format date
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  }
+
   return (
-    <div className="flex h-screen flex-col bg-black text-white">
+    <div className="flex h-screen flex-col  text-white w-full">
       {/* Header */}
       <header className="flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-4">
@@ -112,7 +116,7 @@ export default function PhotoPage({ params }: { params: { id: string } }) {
               <span className="sr-only">Back</span>
             </Link>
           </Button>
-          <span className="text-sm">{photo.date}</span>
+          <span className="text-sm">{formatDate(photo.date)}</span>
         </div>
         <div className="flex items-center gap-2">
           <TooltipProvider>
@@ -234,7 +238,7 @@ export default function PhotoPage({ params }: { params: { id: string } }) {
       <footer className="flex h-12 items-center justify-between border-t border-gray-800 px-4">
         <div className="text-sm text-gray-400">{photo.location}</div>
         <div className="text-sm text-gray-400">
-          Photo {currentIndex + 1} of {allPhotos.length}
+          Photo {currentIndex + 1} of {activePhotos.length}
         </div>
       </footer>
 
@@ -252,7 +256,7 @@ export default function PhotoPage({ params }: { params: { id: string } }) {
             <div className="space-y-4">
               <div>
                 <h3 className="text-sm font-medium text-muted-foreground">Date Taken</h3>
-                <p>{photo.taken}</p>
+                <p>{formatDate(photo.date)}</p>
               </div>
               <div>
                 <h3 className="text-sm font-medium text-muted-foreground">Location</h3>
@@ -260,16 +264,49 @@ export default function PhotoPage({ params }: { params: { id: string } }) {
               </div>
               <div>
                 <h3 className="text-sm font-medium text-muted-foreground">Camera</h3>
-                <p>{photo.camera}</p>
+                <p>{photo.metadata.camera || "Unknown"}</p>
               </div>
+              {photo.metadata.iso && (
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">ISO</h3>
+                  <p>{photo.metadata.iso}</p>
+                </div>
+              )}
+              {photo.metadata.aperture && (
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">Aperture</h3>
+                  <p>{photo.metadata.aperture}</p>
+                </div>
+              )}
+              {photo.metadata.shutterSpeed && (
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">Shutter Speed</h3>
+                  <p>{photo.metadata.shutterSpeed}</p>
+                </div>
+              )}
               <div>
                 <h3 className="text-sm font-medium text-muted-foreground">Resolution</h3>
-                <p>{photo.resolution}</p>
+                <p>{photo.dimensions.width} × {photo.dimensions.height}</p>
               </div>
               <div>
                 <h3 className="text-sm font-medium text-muted-foreground">Size</h3>
-                <p>{photo.size}</p>
+                <p>{formatFileSize(photo.size)}</p>
               </div>
+              {photo.tags.length > 0 && (
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground">Tags</h3>
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {photo.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 bg-muted rounded-md text-xs"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </SheetContent>

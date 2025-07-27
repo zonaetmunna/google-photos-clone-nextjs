@@ -1,30 +1,44 @@
-"use client"
+"use client";
 
-import { ArrowLeft, Search, Trash2, Archive, Star, Download, Share } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { Skeleton } from "@/components/ui/skeleton"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Archive,
+  ArrowLeft,
+  Download,
+  Search,
+  Share,
+  Star,
+  Trash2,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function UtilitiesPage() {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Simulate loading delay
     const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 800)
+      setIsLoading(false);
+    }, 800);
 
-    return () => clearTimeout(timer)
-  }, [])
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col w-full">
       {/* Header */}
-      <header className="flex h-16 items-center justify-between border-b px-4">
+      <header className="flex h-16 items-center justify-between  px-4">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" asChild>
             <Link href="/">
@@ -54,7 +68,9 @@ export default function UtilitiesPage() {
                       <Search className="h-5 w-5" />
                       Find duplicates
                     </CardTitle>
-                    <CardDescription>Identify and remove duplicate photos</CardDescription>
+                    <CardDescription>
+                      Identify and remove duplicate photos
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex justify-between text-sm mb-2">
@@ -71,7 +87,9 @@ export default function UtilitiesPage() {
                       <Archive className="h-5 w-5" />
                       Archive suggestions
                     </CardTitle>
-                    <CardDescription>Automatically archive screenshots and receipts</CardDescription>
+                    <CardDescription>
+                      Automatically archive screenshots and receipts
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex justify-between text-sm mb-2">
@@ -87,18 +105,35 @@ export default function UtilitiesPage() {
                       <Star className="h-5 w-5" />
                       Best photos
                     </CardTitle>
-                    <CardDescription>AI-selected best photos from your collection</CardDescription>
+                    <CardDescription>
+                      AI-selected best photos from your collection
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-3 gap-2 mb-2">
                       <div className="aspect-square relative rounded overflow-hidden">
-                        <Image src="/placeholder.svg?height=100&width=100" alt="" fill className="object-cover" />
+                        <Image
+                          src="/placeholder.svg?height=100&width=100"
+                          alt=""
+                          fill
+                          className="object-cover"
+                        />
                       </div>
                       <div className="aspect-square relative rounded overflow-hidden">
-                        <Image src="/placeholder.svg?height=100&width=100" alt="" fill className="object-cover" />
+                        <Image
+                          src="/placeholder.svg?height=100&width=100"
+                          alt=""
+                          fill
+                          className="object-cover"
+                        />
                       </div>
                       <div className="aspect-square relative rounded overflow-hidden">
-                        <Image src="/placeholder.svg?height=100&width=100" alt="" fill className="object-cover" />
+                        <Image
+                          src="/placeholder.svg?height=100&width=100"
+                          alt=""
+                          fill
+                          className="object-cover"
+                        />
                       </div>
                     </div>
                     <Button className="w-full">View all</Button>
@@ -111,7 +146,9 @@ export default function UtilitiesPage() {
                       <Download className="h-5 w-5" />
                       Bulk download
                     </CardTitle>
-                    <CardDescription>Download multiple photos at once</CardDescription>
+                    <CardDescription>
+                      Download multiple photos at once
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <Button className="w-full">Select photos</Button>
@@ -124,7 +161,9 @@ export default function UtilitiesPage() {
                       <Trash2 className="h-5 w-5" />
                       Storage cleanup
                     </CardTitle>
-                    <CardDescription>Free up space by removing large or blurry photos</CardDescription>
+                    <CardDescription>
+                      Free up space by removing large or blurry photos
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
@@ -144,7 +183,9 @@ export default function UtilitiesPage() {
                       <Share className="h-5 w-5" />
                       Shared with you
                     </CardTitle>
-                    <CardDescription>Manage photos shared with you by others</CardDescription>
+                    <CardDescription>
+                      Manage photos shared with you by others
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="text-sm mb-2">
@@ -159,5 +200,5 @@ export default function UtilitiesPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }

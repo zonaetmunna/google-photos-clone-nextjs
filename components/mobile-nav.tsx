@@ -1,24 +1,50 @@
-"use client"
+"use client";
 
-import { Archive, Grid, Calendar, Info, Star, Clock, Trash2, Upload, X } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { useMobile } from "@/hooks/use-mobile";
+import { useSidebar } from "@/hooks/use-sidebar";
+import {
+  Archive,
+  Calendar,
+  Clock,
+  Grid,
+  Info,
+  Star,
+  Trash2,
+  Upload,
+  X,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 interface MobileNavProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
+export default function MobileNav() {
+  const isMobile = useMobile();
+  const { sidebarOpen, setSidebarOpen } = useSidebar();
+
+  const isOpen = sidebarOpen && isMobile;
+
+  const onClose = () => {
+    setSidebarOpen(false);
+  };
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent side="left" className="p-0 w-[280px]">
         <div className="flex h-16 items-center justify-between border-b px-4">
           <Link href="/" className="flex items-center gap-2" onClick={onClose}>
-            <Image src="/placeholder.svg?height=40&width=40" alt="Logo" width={40} height={40} className="rounded" />
+            <Image
+              src="/placeholder.svg?height=40&width=40"
+              alt="Logo"
+              width={40}
+              height={40}
+              className="rounded"
+            />
             <span className="text-xl font-semibold">Photos</span>
           </Link>
           <Button variant="ghost" size="icon" onClick={onClose}>
@@ -28,7 +54,11 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
         </div>
         <ScrollArea className="h-[calc(100vh-4rem)]">
           <div className="p-4">
-            <Button variant="outline" asChild className="mb-4 w-full justify-start gap-2">
+            <Button
+              variant="outline"
+              asChild
+              className="mb-4 w-full justify-start gap-2"
+            >
               <Link href="/upload" onClick={onClose}>
                 <Upload className="h-4 w-4" />
                 Upload
@@ -108,7 +138,9 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
                     className="h-6 w-6 rounded"
                   />
                   Favorites
-                  <span className="ml-auto text-xs text-muted-foreground">42</span>
+                  <span className="ml-auto text-xs text-muted-foreground">
+                    42
+                  </span>
                 </Link>
                 <Link
                   href="/albums/2"
@@ -123,14 +155,18 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
                     className="h-6 w-6 rounded"
                   />
                   Travel
-                  <span className="ml-auto text-xs text-muted-foreground">128</span>
+                  <span className="ml-auto text-xs text-muted-foreground">
+                    128
+                  </span>
                 </Link>
                 <Link
                   href="/albums/create"
                   className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground"
                   onClick={onClose}
                 >
-                  <div className="flex h-6 w-6 items-center justify-center rounded bg-muted">+</div>
+                  <div className="flex h-6 w-6 items-center justify-center rounded bg-muted">
+                    +
+                  </div>
                   Create new album
                 </Link>
               </nav>
@@ -139,5 +175,5 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
         </ScrollArea>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

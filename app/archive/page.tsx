@@ -1,80 +1,80 @@
-"use client"
+"use client";
 
-import { ArrowLeft, Archive, Grid, Calendar, Filter, RotateCcw } from "lucide-react"
-import Link from "next/link"
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Checkbox } from "@/components/ui/checkbox"
-import { useToast } from "@/hooks/use-toast"
-import { Skeleton } from "@/components/ui/skeleton"
-
-// Sample photo data for archive
-const archivedPhotos = Array.from({ length: 15 }, (_, i) => ({
-  id: i + 200,
-  src: `/placeholder.svg?height=${300 + (i % 3) * 50}&width=${400 + (i % 5) * 50}`,
-  alt: `Archived Photo ${i + 1}`,
-  date: new Date(2023, Math.floor(i / 5), (i % 28) + 1).toISOString(),
-  archivedOn: new Date(2023, 4, (i % 28) + 1).toLocaleDateString(),
-}))
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { archivedPhotos } from "@/data/data";
+import { useToast } from "@/hooks/use-toast";
+import { formatDate } from "@/utils/date-time-formator";
+import {
+  Archive,
+  ArrowLeft,
+  Calendar,
+  Filter,
+  Grid,
+  RotateCcw,
+} from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function ArchivePage() {
-  const { toast } = useToast()
-  const [isLoading, setIsLoading] = useState(true)
-  const [archived, setArchived] = useState<typeof archivedPhotos>([])
-  const [selectedPhotos, setSelectedPhotos] = useState<number[]>([])
-  const [selectAll, setSelectAll] = useState(false)
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(true);
+  const [archived, setArchived] = useState<typeof archivedPhotos>([]);
+  const [selectedPhotos, setSelectedPhotos] = useState<number[]>([]);
+  const [selectAll, setSelectAll] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     // Simulate loading delay
     const timer = setTimeout(() => {
-      setArchived(archivedPhotos)
-      setIsLoading(false)
-    }, 800)
+      setArchived(archivedPhotos);
+      setIsLoading(false);
+    }, 800);
 
-    return () => clearTimeout(timer)
-  }, [])
+    return () => clearTimeout(timer);
+  }, []);
 
   const toggleSelectAll = () => {
     if (selectAll) {
-      setSelectedPhotos([])
+      setSelectedPhotos([]);
     } else {
-      setSelectedPhotos(archived.map((photo) => photo.id))
+      setSelectedPhotos(archived.map((photo) => photo.id));
     }
-    setSelectAll(!selectAll)
-  }
+    setSelectAll(!selectAll);
+  };
 
   const togglePhotoSelection = (id: number) => {
     if (selectedPhotos.includes(id)) {
-      setSelectedPhotos(selectedPhotos.filter((photoId) => photoId !== id))
-      setSelectAll(false)
+      setSelectedPhotos(selectedPhotos.filter((photoId) => photoId !== id));
+      setSelectAll(false);
     } else {
-      setSelectedPhotos([...selectedPhotos, id])
+      setSelectedPhotos([...selectedPhotos, id]);
       if (selectedPhotos.length + 1 === archived.length) {
-        setSelectAll(true)
+        setSelectAll(true);
       }
     }
-  }
+  };
 
   const handleUnarchive = () => {
-    if (selectedPhotos.length === 0) return
+    if (selectedPhotos.length === 0) return;
 
     toast({
       title: "Photos unarchived",
       description: `${selectedPhotos.length} photos have been moved back to your library`,
-    })
+    });
 
-    setArchived(archived.filter((photo) => !selectedPhotos.includes(photo.id)))
-    setSelectedPhotos([])
-    setSelectAll(false)
-  }
+    setArchived(archived.filter((photo) => !selectedPhotos.includes(photo.id)));
+    setSelectedPhotos([]);
+    setSelectAll(false);
+  };
 
   return (
     <div className="flex h-screen flex-col">
       {/* Header */}
-      <header className="flex h-16 items-center justify-between border-b px-4">
+      <header className="flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" asChild>
             <Link href="/">
@@ -117,7 +117,9 @@ export default function ArchivePage() {
                   </label>
                 </div>
                 <span className="text-sm text-muted-foreground">
-                  {isLoading ? "Loading..." : `${archived.length} archived items`}
+                  {isLoading
+                    ? "Loading..."
+                    : `${archived.length} archived items`}
                 </span>
               </div>
               <TabsList>
@@ -142,7 +144,8 @@ export default function ArchivePage() {
               ) : archived.length > 0 ? (
                 <div className="space-y-4">
                   <p className="text-sm text-muted-foreground">
-                    Archived photos are hidden from your main library but still accessible here
+                    Archived photos are hidden from your main library but still
+                    accessible here
                   </p>
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
                     {archived.map((photo) => (
@@ -158,7 +161,9 @@ export default function ArchivePage() {
                           />
                           <div
                             className={`absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity ${
-                              selectedPhotos.includes(photo.id) ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                              selectedPhotos.includes(photo.id)
+                                ? "opacity-100"
+                                : "opacity-0 group-hover:opacity-100"
                             }`}
                           >
                             <div
@@ -171,12 +176,17 @@ export default function ArchivePage() {
                               <Checkbox
                                 checked={selectedPhotos.includes(photo.id)}
                                 className="h-4 w-4"
-                                onCheckedChange={() => togglePhotoSelection(photo.id)}
+                                onCheckedChange={() =>
+                                  togglePhotoSelection(photo.id)
+                                }
                               />
                             </div>
                           </div>
                         </div>
-                        <div className="mt-1 text-xs text-muted-foreground">Archived: {photo.archivedOn}</div>
+                        <div className="mt-1 text-xs text-muted-foreground">
+                          Archived: {formatDate(new Date(photo?.archivedDate ?? Date.now()))
+                          }
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -186,9 +196,12 @@ export default function ArchivePage() {
                   <div className="mb-4 rounded-full bg-muted p-4">
                     <Archive className="h-8 w-8 text-muted-foreground" />
                   </div>
-                  <h3 className="mb-1 text-xl font-semibold">Archive is empty</h3>
+                  <h3 className="mb-1 text-xl font-semibold">
+                    Archive is empty
+                  </h3>
                   <p className="text-center text-muted-foreground">
-                    Photos you archive will be hidden from your main library but still accessible here
+                    Photos you archive will be hidden from your main library but
+                    still accessible here
                   </p>
                 </div>
               )}
@@ -202,7 +215,10 @@ export default function ArchivePage() {
                       <Skeleton className="h-8 w-32" />
                       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
                         {Array.from({ length: 5 }).map((_, j) => (
-                          <Skeleton key={j} className="aspect-square rounded-md" />
+                          <Skeleton
+                            key={j}
+                            className="aspect-square rounded-md"
+                          />
                         ))}
                       </div>
                     </div>
@@ -211,7 +227,8 @@ export default function ArchivePage() {
               ) : archived.length > 0 ? (
                 <div className="space-y-8">
                   <p className="text-sm text-muted-foreground">
-                    Archived photos are hidden from your main library but still accessible here
+                    Archived photos are hidden from your main library but still
+                    accessible here
                   </p>
                   <div>
                     <h2 className="mb-4 text-xl font-semibold">May 2023</h2>
@@ -229,7 +246,9 @@ export default function ArchivePage() {
                             />
                             <div
                               className={`absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity ${
-                                selectedPhotos.includes(photo.id) ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                                selectedPhotos.includes(photo.id)
+                                  ? "opacity-100"
+                                  : "opacity-0 group-hover:opacity-100"
                               }`}
                             >
                               <div
@@ -242,12 +261,16 @@ export default function ArchivePage() {
                                 <Checkbox
                                   checked={selectedPhotos.includes(photo.id)}
                                   className="h-4 w-4"
-                                  onCheckedChange={() => togglePhotoSelection(photo.id)}
+                                  onCheckedChange={() =>
+                                    togglePhotoSelection(photo.id)
+                                  }
                                 />
                               </div>
                             </div>
                           </div>
-                          <div className="mt-1 text-xs text-muted-foreground">Archived: {photo.archivedOn}</div>
+                          <div className="mt-1 text-xs text-muted-foreground">
+                            Archived: {photo.archivedDate}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -268,7 +291,9 @@ export default function ArchivePage() {
                             />
                             <div
                               className={`absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity ${
-                                selectedPhotos.includes(photo.id) ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                                selectedPhotos.includes(photo.id)
+                                  ? "opacity-100"
+                                  : "opacity-0 group-hover:opacity-100"
                               }`}
                             >
                               <div
@@ -281,12 +306,16 @@ export default function ArchivePage() {
                                 <Checkbox
                                   checked={selectedPhotos.includes(photo.id)}
                                   className="h-4 w-4"
-                                  onCheckedChange={() => togglePhotoSelection(photo.id)}
+                                  onCheckedChange={() =>
+                                    togglePhotoSelection(photo.id)
+                                  }
                                 />
                               </div>
                             </div>
                           </div>
-                          <div className="mt-1 text-xs text-muted-foreground">Archived: {photo.archivedOn}</div>
+                          <div className="mt-1 text-xs text-muted-foreground">
+                            Archived: {photo.archivedDate}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -297,9 +326,12 @@ export default function ArchivePage() {
                   <div className="mb-4 rounded-full bg-muted p-4">
                     <Archive className="h-8 w-8 text-muted-foreground" />
                   </div>
-                  <h3 className="mb-1 text-xl font-semibold">Archive is empty</h3>
+                  <h3 className="mb-1 text-xl font-semibold">
+                    Archive is empty
+                  </h3>
                   <p className="text-center text-muted-foreground">
-                    Photos you archive will be hidden from your main library but still accessible here
+                    Photos you archive will be hidden from your main library but
+                    still accessible here
                   </p>
                 </div>
               )}
@@ -308,5 +340,5 @@ export default function ArchivePage() {
         </div>
       </main>
     </div>
-  )
+  );
 }

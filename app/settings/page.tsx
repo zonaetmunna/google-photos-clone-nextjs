@@ -1,15 +1,15 @@
 "use client"
 
-import { ArrowLeft, User, Bell, Shield, HardDrive, Palette, HelpCircle } from "lucide-react"
-import Link from "next/link"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Separator } from "@/components/ui/separator"
-import { Switch } from "@/components/ui/switch"
+import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Separator } from "@/components/ui/separator"
+import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/hooks/use-toast"
+import { ArrowLeft, Bell, HardDrive, HelpCircle, Palette, Shield, User } from "lucide-react"
+import Link from "next/link"
+import { useState } from "react"
 
 export default function SettingsPage() {
   const { toast } = useToast()
@@ -28,7 +28,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col w-full">
       {/* Header */}
       <header className="flex h-16 items-center justify-between border-b px-4">
         <div className="flex items-center gap-4">

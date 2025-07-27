@@ -2,14 +2,14 @@
 
 import type React from "react"
 
-import { useState, useRef } from "react"
-import { ArrowLeft, Upload, X, ImageIcon, Film, File } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { useToast } from "@/hooks/use-toast"
+import { ArrowLeft, File, Film, ImageIcon, Upload, X } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useRef, useState } from "react"
 
 export default function UploadPage() {
   const router = useRouter()
@@ -102,7 +102,7 @@ export default function UploadPage() {
   }
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col w-full" >
       {/* Header */}
       <header className="flex h-16 items-center justify-between border-b px-4">
         <div className="flex items-center gap-4">

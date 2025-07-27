@@ -2,17 +2,16 @@
 
 import type React from "react"
 
-import { ArrowLeft, X, Plus, Check, Mail } from "lucide-react"
-import NextLink from "next/link"
-import Image from "next/image"
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useToast } from "@/hooks/use-toast"
+import { ArrowLeft, Check, Link, Mail, Plus, X } from "lucide-react"
+import Image from "next/image"
+import NextLink from "next/link"
 import { useRouter } from "next/navigation"
-import { Link } from "lucide-react"
+import { useState } from "react"
 
 // Sample photo data
 const libraryPhotos = Array.from({ length: 30 }, (_, i) => ({
@@ -82,9 +81,9 @@ export default function CreateSharedAlbumPage() {
   }
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col w-full">
       {/* Header */}
-      <header className="flex h-16 items-center justify-between border-b px-4">
+      <header className="flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" asChild>
             <NextLink href="/sharing">
