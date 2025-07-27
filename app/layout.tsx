@@ -1,8 +1,5 @@
-import "@/app/globals.css";
-import MobileNav from "@/components/mobile-nav";
-import Navbar from "@/components/navbar";
-import Sidebar from "@/components/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
+import "@/styles/globals.css";
 import type React from "react";
 
 export const metadata = {
@@ -21,19 +18,11 @@ export default function RootLayout({
       <body>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex h-screen flex-col">
-            <Navbar />
-
-            <div className="flex flex-1 overflow-hidden">
-              <MobileNav />
-              <Sidebar/>
-              {children}
-            </div>
-          </div>
+          {children}
         </ThemeProvider>
       </body>
     </html>

@@ -87,7 +87,7 @@ export default function Navbar() {
             <span className="sr-only">Settings</span>
           </Link>
         </Button>
-        <Avatar className="h-8 w-8">
+        <Avatar className="h-8 w-8 cursor-pointer" onClick={() => router.push("/profile")}>
           <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
           <AvatarFallback>U</AvatarFallback>
         </Avatar>

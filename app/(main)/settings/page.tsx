@@ -1,31 +1,39 @@
-"use client"
+"use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Separator } from "@/components/ui/separator"
-import { Switch } from "@/components/ui/switch"
-import { useToast } from "@/hooks/use-toast"
-import { ArrowLeft, Bell, HardDrive, HelpCircle, Palette, Shield, User } from "lucide-react"
-import Link from "next/link"
-import { useState } from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
+import { useToast } from "@/hooks/use-toast";
+import {
+  ArrowLeft,
+  Bell,
+  HardDrive,
+  HelpCircle,
+  Palette,
+  Shield,
+  User,
+} from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
 export default function SettingsPage() {
-  const { toast } = useToast()
-  const [theme, setTheme] = useState("system")
+  const { toast } = useToast();
+  const [theme, setTheme] = useState("system");
   const [notifications, setNotifications] = useState({
     memories: true,
     sharing: true,
     updates: false,
-  })
+  });
 
   const handleSave = () => {
     toast({
       title: "Settings saved",
       description: "Your preferences have been updated",
-    })
-  }
+    });
+  };
 
   return (
     <div className="flex h-screen flex-col w-full">
@@ -45,12 +53,15 @@ export default function SettingsPage() {
 
       {/* Main content */}
       <main className="flex-1 overflow-auto">
-        <div className="mx-auto max-w-3xl p-4 md:p-8">
+        <div className="mx-auto max-w-7xl p-4 md:p-8">
           <div className="grid gap-8">
             <section>
               <div className="mb-4 flex items-center gap-4">
                 <Avatar className="h-16 w-16">
-                  <AvatarImage src="/placeholder.svg?height=64&width=64" alt="User" />
+                  <AvatarImage
+                    src="/placeholder.svg?height=64&width=64"
+                    alt="User"
+                  />
                   <AvatarFallback>U</AvatarFallback>
                 </Avatar>
                 <div>
@@ -114,12 +125,16 @@ export default function SettingsPage() {
                     <Label htmlFor="memories" className="block">
                       Memories
                     </Label>
-                    <p className="text-sm text-muted-foreground">Get notified about memories from past photos</p>
+                    <p className="text-sm text-muted-foreground">
+                      Get notified about memories from past photos
+                    </p>
                   </div>
                   <Switch
                     id="memories"
                     checked={notifications.memories}
-                    onCheckedChange={(checked) => setNotifications({ ...notifications, memories: checked })}
+                    onCheckedChange={(checked) =>
+                      setNotifications({ ...notifications, memories: checked })
+                    }
                   />
                 </div>
                 <div className="flex items-center justify-between">
@@ -127,12 +142,16 @@ export default function SettingsPage() {
                     <Label htmlFor="sharing" className="block">
                       Sharing
                     </Label>
-                    <p className="text-sm text-muted-foreground">Get notified when someone shares photos with you</p>
+                    <p className="text-sm text-muted-foreground">
+                      Get notified when someone shares photos with you
+                    </p>
                   </div>
                   <Switch
                     id="sharing"
                     checked={notifications.sharing}
-                    onCheckedChange={(checked) => setNotifications({ ...notifications, sharing: checked })}
+                    onCheckedChange={(checked) =>
+                      setNotifications({ ...notifications, sharing: checked })
+                    }
                   />
                 </div>
                 <div className="flex items-center justify-between">
@@ -140,12 +159,16 @@ export default function SettingsPage() {
                     <Label htmlFor="updates" className="block">
                       Product updates
                     </Label>
-                    <p className="text-sm text-muted-foreground">Get notified about new features and updates</p>
+                    <p className="text-sm text-muted-foreground">
+                      Get notified about new features and updates
+                    </p>
                   </div>
                   <Switch
                     id="updates"
                     checked={notifications.updates}
-                    onCheckedChange={(checked) => setNotifications({ ...notifications, updates: checked })}
+                    onCheckedChange={(checked) =>
+                      setNotifications({ ...notifications, updates: checked })
+                    }
                   />
                 </div>
               </div>
@@ -187,7 +210,9 @@ export default function SettingsPage() {
                 <div>
                   <div className="mb-2 flex items-center justify-between">
                     <span className="text-sm font-medium">Storage used</span>
-                    <span className="text-sm text-muted-foreground">3.2 GB of 15 GB</span>
+                    <span className="text-sm text-muted-foreground">
+                      3.2 GB of 15 GB
+                    </span>
                   </div>
                   <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
                     <div className="h-full w-[21%] rounded-full bg-primary"></div>
@@ -210,7 +235,9 @@ export default function SettingsPage() {
                     <Label htmlFor="location" className="block">
                       Location data
                     </Label>
-                    <p className="text-sm text-muted-foreground">Save location data in your photos</p>
+                    <p className="text-sm text-muted-foreground">
+                      Save location data in your photos
+                    </p>
                   </div>
                   <Switch id="location" defaultChecked />
                 </div>
@@ -219,7 +246,9 @@ export default function SettingsPage() {
                     <Label htmlFor="face" className="block">
                       Face recognition
                     </Label>
-                    <p className="text-sm text-muted-foreground">Use face recognition to organize photos</p>
+                    <p className="text-sm text-muted-foreground">
+                      Use face recognition to organize photos
+                    </p>
                   </div>
                   <Switch id="face" defaultChecked />
                 </div>
@@ -253,5 +282,5 @@ export default function SettingsPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }
